@@ -406,82 +406,6 @@ class StudentController extends Controller
     }
 
 
-    // public function calculateCGPA($student_id)
-    // {
-    //     AuthHelper::checkUser();
-    //     AuthHelper::checkAdmin();
-
-    //     $userID = Auth::id();
-    //     $student = Student::where('user_id', $userID)->with('batch.courses')->firstOrFail();
-    //     $studentId = $student->id;
-    //     $isEnrolledInAnyCourse = $student->batch->courses()->exists();
-    //     if (!$isEnrolledInAnyCourse) {
-    //         return response()->json([
-    //             'message' => 'Student is not enrolled in any course.'
-    //         ], 403);
-    //     }
-
-    //     $totalCredits = $student->batch->courses->sum('credit');
-
-    //     $totalMarks = StudentAnswer::where('student_id', $studentId)
-    //         ->where('is_correct', 1)
-    //         ->count();
-
-    //     $totalQuestionsInAllCourses = Mcq::count();
-
-    //     $mcqPercentage = ($totalQuestionsInAllCourses > 0)
-    //         ? ($totalMarks / $totalQuestionsInAllCourses) * 100
-    //         : 0;
-
-    //     $totalMarksInAllCourses = AssignmentSubmission::where('student_id', $studentId)
-    //         ->sum('marks');
-
-    //     $totalExpectedAssignmentMarksInAllCourses = Material::sum('marks');
-
-    //     $totalAssignmentMarksInAllCourses = AssignmentSubmission::where('student_id', $studentId)
-    //         ->sum('marks');
-    //     $assignmentPercentage = ($totalExpectedAssignmentMarksInAllCourses > 0)
-    //         ? ($totalAssignmentMarksInAllCourses / $totalExpectedAssignmentMarksInAllCourses) * 100
-    //         : 0;
-
-    //     // Convert MCQ percentage to CGPA using provided scale
-    //     $mcqCGPA = $this->convertPercentageToCGPA($mcqPercentage);
-
-    //     // Convert Assignment percentage to CGPA using provided scale
-    //     $assignmentCGPA = $this->convertPercentageToCGPA($assignmentPercentage);
-
-    //     // Calculate overall CGPA by averaging the two CGPAs (MCQ and Assignment)
-    //     $totalCGPA = ($mcqCGPA + $assignmentCGPA) / 2;
-
-    //     return response()->json([
-    //         'student' => [
-    //             'id' => $student->id,
-    //             'profile_picture' => $student->profile_picture,
-    //             'first_name' => $student->first_name,
-    //             'last_name' => $student->last_name,
-    //             'email' => $student->email,
-    //             'phone_number' => $student->phone_number,
-    //             'program' => $student->program,
-    //             'address' => $student->address,
-    //             'postal_code' => $student->postal_code,
-    //             'blood_group' => $student->blood_group,
-    //             'gender' => $student->gender,
-    //             'user_status' => $student->user_status,
-    //             'description' => $student->description,
-    //             'batch_title' => $student->batch->title,
-    //             'created_at' => $student->created_at,
-    //             'updated_at' => $student->updated_at
-    //         ],
-    //         'total_assignment_marks_expected' => $totalExpectedAssignmentMarksInAllCourses, // Total marks expected from assignments
-    //         'total_marks_gained_by_student' => $totalMarksInAllCourses, // Total marks gained by student
-    //         'total_marks_expected_in_mcq' => $totalQuestionsInAllCourses, // Total marks expected in MCQs
-    //         'total_marks_gained_in_mcq' => $totalMarks, // Total marks gained by student in MCQs
-    //         'total_credits_registered_for' => $totalCredits, // Total credits student is registered for
-    //         'mcq_percentage' => round($mcqPercentage, 2), // MCQ percentage
-    //         'assignment_percentage' => round($assignmentPercentage, 2), // Assignment percentage
-    //         'cgpa' => round($totalCGPA, 2) // Total CGPA Calculation result
-    //     ]);
-    // }
 
     private function convertPercentageToCGPA($percentage)
     {
@@ -641,6 +565,16 @@ class StudentController extends Controller
             // If the certificate is found and approved
             Log::info("Certificate successfully retrieved for user", ['certificate' => $certificate]);
             return $this->successResponse('Certificate retrieved successfully', ['certificate' => $certificate]);
+        });
+    }
+
+    public function destroy(Certificate $certificate)
+    {
+        return $this->safeCall(function () use ($certificate) {
+            AuthHelper::checkUser();
+            AuthHelper::checkAdmin();
+            $certificate->delete();
+            return $this->successResponse('Certificate deleted successfully');
         });
     }
 }
