@@ -124,6 +124,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/get/courses', 'getCourses');
         Route::get('/get/materials/{id}', 'getMaterials');
         Route::delete('/{student}', 'destroy');
+        // Route::post('/update-profile', 'updateProfile');
     });
 
     Route::post('/batch-course/store-or-update', [BatchCourseController::class, 'storeOrUpdate']);
