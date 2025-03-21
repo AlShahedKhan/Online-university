@@ -60,35 +60,35 @@ class StudentController extends Controller
 
             $user = Auth::user();
 
-            // Decode 'data' field
-            $data = json_decode($request->input('data'), true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                return $this->errorResponse('The data field must be a valid JSON object.', 400);
-            }
+            // // Decode 'data' field
+            // $data = json_decode($request->input('data'), true);
+            // if (json_last_error() !== JSON_ERROR_NONE) {
+            //     return $this->errorResponse('The data field must be a valid JSON object.', 400);
+            // }
 
-            Log::info('Request data:', $data);
+            // Log::info('Request data:', $data);
 
-            // Ensure email cannot be changed
-            unset($data['email']);
+            // // Ensure email cannot be changed
+            // unset($data['email']);
 
-            if (!$user->is_admin) {
-                unset($data['student_id']);
-            }
+            // if (!$user->is_admin) {
+            //     unset($data['student_id']);
+            // }
 
             // Validate data including optional password
-            $validated = validator($data, [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'phone_number' => 'nullable|string',
-                'address' => 'nullable|string',
-                'postal_code' => 'nullable|string',
-                'student_id' => 'nullable|string',
-                'blood_group' => 'nullable|string',
-                'gender' => 'nullable|in:Male,Female,Other',
-                'user_status' => 'nullable|in:Active,Inactive',
-                'description' => 'nullable|string',
-                'password' => 'nullable|string|min:8|confirmed', // Password is optional but must be confirmed
-            ])->validate();
+            // $validated = validator($data, [
+            //     'first_name' => 'required|string|max:255',
+            //     'last_name' => 'required|string|max:255',
+            //     'phone_number' => 'nullable|string',
+            //     'address' => 'nullable|string',
+            //     'postal_code' => 'nullable|string',
+            //     'student_id' => 'nullable|string',
+            //     'blood_group' => 'nullable|string',
+            //     'gender' => 'nullable|in:Male,Female,Other',
+            //     'user_status' => 'nullable|in:Active,Inactive',
+            //     'description' => 'nullable|string',
+            //     'password' => 'nullable|string|min:8|confirmed', // Password is optional but must be confirmed
+            // ])->validate();
 
             // Handle profile picture update
             if ($request->hasFile('profile_picture')) {
