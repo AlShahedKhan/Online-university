@@ -568,13 +568,13 @@ class StudentController extends Controller
         });
     }
 
-    public function destroy(Certificate $certificate)
+    public function destroy(Student $student)
     {
-        return $this->safeCall(function () use ($certificate) {
+        return $this->safeCall(function () use ($student) {
             AuthHelper::checkUser();
             AuthHelper::checkAdmin();
-            $certificate->delete();
-            return $this->successResponse('Certificate deleted successfully');
+            $student->delete();
+            return $this->successResponse('student deleted successfully');
         });
     }
 }
