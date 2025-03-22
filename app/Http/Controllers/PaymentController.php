@@ -260,7 +260,7 @@ class PaymentController extends Controller
         });
     }
 
-   
+
 
 
     public function checkout(Request $request)
@@ -324,10 +324,13 @@ class PaymentController extends Controller
 
                 Log::info("Payment Intent Created: " . json_encode($paymentIntent));
 
+                $amountInDollars = number_format($amountInCents / 100, 2);
+
                 // Save payment in database
                 Payment::create([
                     'user_id' => $user->id,
-                    'amount' => $amountInCents,
+                    // 'amount' => $amountInCents,
+                    'amount' => $amountInDollars,
                     'currency' => 'usd',
                     'payment_intent_id' => $paymentIntent->id,
                 ]);
@@ -336,7 +339,8 @@ class PaymentController extends Controller
                     Log::info("Payment successful for user ID: {$user->id}");
 
                     return $this->successResponse('Payment successful', [
-                        'amount in cent' => $amountInCents,
+                        // 'amount in cent' => $amountInCents,
+                        'amount in dollar' => $amountInDollars,
                         'currency' => 'usd',
                         'payment_method_type' => $paymentIntent->payment_method ?? 'Unknown',
                         'student_name' => $user->first_name . ' ' . $user->last_name,
