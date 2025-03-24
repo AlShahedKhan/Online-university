@@ -16,15 +16,19 @@ class PaymentController extends Controller
 {
     use HandlesApiResponse;
 
-
-    public function getAdminPayments()
+    public function getAdminPayments($student_id)
     {
-        return $this->safeCall(function () {
+        return $this->safeCall(function () use ($student_id) {
             AuthHelper::checkUser();
             AuthHelper::checkAdmin();
 
-            // Get payments and load associated users with their students
-            $payments = Payment::with('user.student.batch.courses.department.tuitionFees')->get();
+            // Get payments for the specific student and load associated users with their students
+            $payments = Payment::whereHas('user.student', function ($query) use ($student_id) {
+                $query->where('student_id', $student_id);
+            })
+                ->with('user.student.batch.courses.department.tuitionFees')
+                ->get();
+
             Log::info($payments);
 
             $uniqueStudents = [];

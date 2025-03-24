@@ -152,7 +152,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contact', [MessageController::class, 'index']);
 
     Route::post('checkout', [PaymentController::class, 'checkout']);
-    Route::get('payments/admin', [PaymentController::class, 'getAdminPayments']);
+    // Route::get('payments/admin', [PaymentController::class, 'getAdminPayments']);
+    Route::get('payments/admin/student/{student_id}', [PaymentController::class, 'getAdminPayments']);
+
     Route::get('payments/student', [PaymentController::class, 'getStudentPayments']);
     Route::get('get-admission-fee', [PaymentController::class, 'getAdmissionFee']);
 
