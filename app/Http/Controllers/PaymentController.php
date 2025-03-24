@@ -20,7 +20,7 @@ class PaymentController extends Controller
     {
         return $this->safeCall(function () use ($student_id) {
             AuthHelper::checkUser();
-            AuthHelper::checkAdmin();
+            // AuthHelper::checkAdmin();
 
             // Get payments for the specific student and load associated users with their students
             $payments = Payment::whereHas('user.student', function ($query) use ($student_id) {
