@@ -52,13 +52,19 @@ class PaymentController extends Controller
                             $totalCredits += $course->credit;
                             $totalCreditFee += $course->department->tuitionFees->sum('credit_fee');
 
+                            $totalFee = $totalCredits * $totalCreditFee;
+
+                            $totalCreditFee = $totalFee + $course->department->tuitionFees->sum('admission_fee');
+
+
+
                             // Store course details
                             $coursesList[] = [
                                 'id' => $course->id,
                                 'name' => $course->name,
                                 'credit' => $course->credit,
-                                'department' => $course->department->name,
-                                'tuition_fee' => $course->department->tuitionFees->sum('credit_fee'),
+                                // 'department' => $course->department->name,
+                                // 'tuition_fee' => $course->department->tuitionFees->sum('credit_fee'),
                             ];
                         }
 
@@ -103,6 +109,21 @@ class PaymentController extends Controller
             return $this->successResponse('Payments retrieved successfully', ['payments' => $formattedData]);
         });
     }
+    // public function getAdminPayments($student_id)
+    // {
+    //     return $this->safeCall(function () use ($student_id) {
+    //         AuthHelper::checkAdmin();
+    //         $userID = Auth::id();
+    //         $student = Student::where('id', $student_id)
+    //             ->with('user.payments')->with('batch.courses')
+    //             ->first();
+
+    //         if (!$student) {
+    //             return $this->errorResponse('Student not found', 404);
+    //         }
+    //         return $this->successResponse('Payments retrieved successfully', ['student' => $student]);
+    //     });
+    // }
 
 
     public function getStudentPayments()
