@@ -163,6 +163,8 @@ class PaymentController extends Controller
                         // Calculate total credit fee
                         $totalCreditFee = $student->batch->courses->sum(fn($course) => $course->credit * $creditFee);
 
+                        $totalCreditFee = $totalCreditFee + $admissionFee;
+
                         // Calculate remaining balance
                         $remainingBalance = $totalCreditFee - $totalPaid;
 
