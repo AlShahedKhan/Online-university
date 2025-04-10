@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('image')->nullable();
             $table->string('title');
+            $table->text('overview')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('our_faculty_id')->constrained('our_faculties')->onDelete('cascade');
             $table->timestamps();

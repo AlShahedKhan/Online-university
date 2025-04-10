@@ -47,12 +47,14 @@ class OurDepartmentController extends Controller
 
             $validatedData = validator($requestData, [
                 'title' => 'required|string|max:255',
+                'overview' => 'nullable|string',
                 'description' => 'nullable|string',
                 'our_faculty_id' => 'required|exists:our_faculties,id',
             ])->validate();
 
             $data = [
                 'title' => $validatedData['title'],
+                'overview' => $validatedData['overview'] ?? null,
                 'description' => $validatedData['description'] ?? null,
                 'our_faculty_id' => $validatedData['our_faculty_id'],
             ];

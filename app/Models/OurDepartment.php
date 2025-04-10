@@ -12,6 +12,7 @@ class OurDepartment extends Model
     protected $fillable = [
         'image',
         'title',
+        'overview',
         'description',
         'our_faculty_id'
     ];
