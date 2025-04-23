@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class AdministrationController extends Controller
 {
+    // 
     use HandlesApiResponse;
     public function index()
     {
